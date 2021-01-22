@@ -4,8 +4,6 @@ var data = {};
 // Global HTML selectors
 var inputSelector = d3.select("#selDataset");
 var panelDemoInfo = d3.select("#sample-metadata");
-var bubbleChart = d3.select("#bubble");
-var gaugeChart = d3.select("#gauge");
 
 // Populate the Demographic Info panel
 function populateDemoInfo(idNum) {
@@ -136,7 +134,57 @@ function drawBubbleChart(idNum) {
 // Draw the gauge chart
 function drawGaugeChart(idNum) {
     // Just grab the one ID we want
-    var samplesFilter = data["samples"].filter(item => item["id"] == idNum);
+    var metadataFilter = data.metadata.filter(item => item["id"] == idNum);
+    var level = metadataFilter[0].wfreq;
+
+    // Calc the meter point
+    var degrees = 180 - (level * 20);
+    var height = .6;
+    var widthby2 = .05;
+    var radians = degrees * Math.PI / 180;
+    var radiansBase = (90 - degrees) * Math.PI / 180;
+    var xHead = height * Math.cos(radians);
+    var yHead = height * Math.sin(radians);
+    var xTail0 = -widthby2 * Math.cos(radiansBase);
+    var yTail0 = -widthby2 * Math.sin(radiansBase);
+    var xTail1 = widthby2 * Math.cos(radiansBase);
+    var yTail1 = widthby2 * Math.sin(radiansBase);
+
+    // Create the triangle for the meter
+    var triangle = `M ${xTail0} ${yTail0} L ${xTail1} ${yTail1} L ${xHead} ${yHead} Z`;
+
+    // Create the traceData variable
+    var traceData = [{
+                        type: 'scatter',
+                        x: [0],
+                        y: [0],
+                        marker: {size: 15, color: '#850000'},
+                        showlegend: false,
+                        name: 'speed',
+                        text: level,
+                        hoverinfo: 'text+name'},
+                        { values: [45/8, 45/8, 45/8, 45/8, 45/8, 45/8, 45/8, 45/8, 45/8, 50],
+                        rotation: 90,
+                        text: ['8-9','7-8','6-7','5-6', '4-5', '3-4', '2-3', '1-2', '0-1', ''],
+                        textinfo: 'text',
+                        textposition:'inside',
+                        marker: {colors:['#84B589','#89BB8F', '#8CBF88', '#B7CC92', '#D5E49D',
+                                        '#E5E7B3', '#E9E6CA', '#F4F1E5','#F8F3EC', '#FFFFFF',]},
+                        labels: ['8-9','7-8','6-7','5-6', '4-5', '3-4', '2-3', '1-2', '0-1', ''],
+                        hoverinfo: 'label',
+                        hole: .5,
+                        type: 'pie',
+                        showlegend: false
+    }]
+
+    // Define the Layout
+    var layout = {
+                    shapes:[{ type: 'path', path: triangle, fillcolor: '#850000', line: { color: '#850000' } }],
+                    title: 'Belly Button Wash Frequency',
+                    xaxis: {zeroline:false, showticklabels:false, showgrid: false, range: [-1, 1]},
+                    yaxis: {zeroline:false, showticklabels:false, showgrid: false, range: [-1, 1]}
+    };
+    Plotly.newPlot('gauge', traceData, layout);
 }
 
 // Initialization: do the load on the data, set up the menu, and draw the initial graphs
@@ -160,7 +208,8 @@ function initialization () {
         // Draw the Bubble Chart
         drawBubbleChart(idNum);
 
-        // TODO do the rest of the flow...
+        // Draw the Gauge Chart
+        drawGaugeChart(idNum);
     });
 }
 
@@ -176,6 +225,7 @@ function optionChanged(idNum) {
     // Draw the Bubble Chart
     drawBubbleChart(idNum);
 
-    // TODO: Call all of the functions to build the page
+    // Draw the Gauge Chart
+    drawGaugeChart(idNum);
 
 };
