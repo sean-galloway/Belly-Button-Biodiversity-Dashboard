@@ -80,7 +80,7 @@ function drawBarPlot(idNum) {
     // console.log(`otu_labels_list: ${otu_labels_list}`);
 
     // Do the Plot
-    // trace for the  data
+    // trace for the data
     var trace = {
         type: "bar",
         y: otu_ids_list,
@@ -125,6 +125,8 @@ function drawBubbleChart(idNum) {
 
     // data
     var traceData = [trace];
+
+    // Define the layout
     var layout = {
                     showlegend: false,
                     height: 600,
@@ -167,7 +169,7 @@ function drawGaugeChart(idNum) {
                         y: [0],
                         marker: {size: 16, color: '#850000'},
                         showlegend: false,
-                        name: 'speed',
+                        name: 'frequency',
                         text: level,
                         hoverinfo: 'text+name'},
                     {   values: [45/8, 45/8, 45/8, 45/8, 45/8, 45/8, 45/8, 45/8, 45/8, 50],
