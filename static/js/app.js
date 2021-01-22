@@ -142,13 +142,14 @@ function drawGaugeChart(idNum) {
     var height = .6;
     var widthby2 = .05;
     var radians = degrees * Math.PI / 180;
-    var radiansBase = (90 - degrees) * Math.PI / 180;
+    var radiansBaseL = (90 + degrees) * Math.PI / 180;
+    var radiansBaseR = (degrees - 90) * Math.PI / 180;
     var xHead = height * Math.cos(radians);
     var yHead = height * Math.sin(radians);
-    var xTail0 = -widthby2 * Math.cos(radiansBase);
-    var yTail0 = -widthby2 * Math.sin(radiansBase);
-    var xTail1 = widthby2 * Math.cos(radiansBase);
-    var yTail1 = widthby2 * Math.sin(radiansBase);
+    var xTail0 = widthby2 * Math.cos(radiansBaseL);
+    var yTail0 = widthby2 * Math.sin(radiansBaseL);
+    var xTail1 = widthby2 * Math.cos(radiansBaseR);
+    var yTail1 = widthby2 * Math.sin(radiansBaseR);
 
     // Create the triangle for the meter
     var triangle = `M ${xTail0} ${yTail0} L ${xTail1} ${yTail1} L ${xHead} ${yHead} Z`;
@@ -158,7 +159,7 @@ function drawGaugeChart(idNum) {
                         type: 'scatter',
                         x: [0],
                         y: [0],
-                        marker: {size: 15, color: '#850000'},
+                        marker: {size: 16, color: '#850000'},
                         showlegend: false,
                         name: 'speed',
                         text: level,
@@ -168,8 +169,8 @@ function drawGaugeChart(idNum) {
                         text: ['8-9','7-8','6-7','5-6', '4-5', '3-4', '2-3', '1-2', '0-1', ''],
                         textinfo: 'text',
                         textposition:'inside',
-                        marker: {colors:['#84B589','#89BB8F', '#8CBF88', '#B7CC92', '#D5E49D',
-                                        '#E5E7B3', '#E9E6CA', '#F4F1E5','#F8F3EC', '#FFFFFF',]},
+                        marker: {colors: [  '#84B589','#89BB8F', '#8CBF88', '#B7CC92', '#D5E49D',
+                                            '#E5E7B3', '#E9E6CA', '#F4F1E5','#F8F3EC', '#FFFFFF',]},
                         labels: ['8-9','7-8','6-7','5-6', '4-5', '3-4', '2-3', '1-2', '0-1', ''],
                         hoverinfo: 'label',
                         hole: .5,
@@ -181,8 +182,8 @@ function drawGaugeChart(idNum) {
     var layout = {
                     shapes:[{ type: 'path', path: triangle, fillcolor: '#850000', line: { color: '#850000' } }],
                     title: 'Belly Button Wash Frequency',
-                    xaxis: {zeroline:false, showticklabels:false, showgrid: false, range: [-1, 1]},
-                    yaxis: {zeroline:false, showticklabels:false, showgrid: false, range: [-1, 1]}
+                    xaxis: {zeroline: false, showticklabels: false, showgrid: false, range: [-1, 1]},
+                    yaxis: {zeroline: false, showticklabels: false, showgrid: false, range: [-1, 1]}
     };
     Plotly.newPlot('gauge', traceData, layout);
 }
