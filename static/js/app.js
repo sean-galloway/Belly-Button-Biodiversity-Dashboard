@@ -8,7 +8,7 @@ var panelDemoInfo = d3.select("#sample-metadata");
 // Populate the Demographic Info panel
 function populateDemoInfo(idNum) {
     // Log a change
-    // console.log("Pop: " + idNum);
+    console.log("Pop: " + idNum);
 
     // Just grab the one ID we want
     var metadataFilter = data.metadata.filter(item => item["id"] == idNum);
@@ -81,7 +81,7 @@ function drawBarPlot(idNum) {
 
     // Do the Plot
     // trace for the  data
-    var trace1 = {
+    var trace = {
         type: "bar",
         y: otu_ids_list,
         x: sample_values_list,
@@ -90,7 +90,7 @@ function drawBarPlot(idNum) {
     };
 
     // data
-    var traceData = [trace1];
+    var traceData = [trace];
 
     // Define the layout
     var layout = {
@@ -104,6 +104,9 @@ function drawBarPlot(idNum) {
 
 // Draw the bubble chart
 function drawBubbleChart(idNum) {
+    // Log a change
+    console.log("Bubble: " + idNum);
+
     // Just grab the one ID we want
     var samplesFilter = data["samples"].filter(item => item["id"] == idNum);
 
@@ -133,6 +136,9 @@ function drawBubbleChart(idNum) {
 
 // Draw the gauge chart
 function drawGaugeChart(idNum) {
+    // Log a change
+    console.log("Gauge: " + idNum);
+
     // Just grab the one ID we want
     var metadataFilter = data.metadata.filter(item => item["id"] == idNum);
     var level = metadataFilter[0].wfreq;
@@ -164,13 +170,13 @@ function drawGaugeChart(idNum) {
                         name: 'speed',
                         text: level,
                         hoverinfo: 'text+name'},
-                        { values: [45/8, 45/8, 45/8, 45/8, 45/8, 45/8, 45/8, 45/8, 45/8, 50],
+                    {   values: [45/8, 45/8, 45/8, 45/8, 45/8, 45/8, 45/8, 45/8, 45/8, 50],
                         rotation: 90,
                         text: ['8-9','7-8','6-7','5-6', '4-5', '3-4', '2-3', '1-2', '0-1', ''],
                         textinfo: 'text',
-                        textposition:'inside',
-                        marker: {colors: [  '#84B589','#89BB8F', '#8CBF88', '#B7CC92', '#D5E49D',
-                                            '#E5E7B3', '#E9E6CA', '#F4F1E5','#F8F3EC', '#FFFFFF',]},
+                        textposition: 'inside',
+                        marker: {colors: [  '#84B589', '#89BB8F', '#8CBF88', '#B7CC92', '#D5E49D',
+                                            '#E5E7B3', '#E9E6CA', '#F4F1E5', '#F8F3EC', '#FFFFFF',]},
                         labels: ['8-9','7-8','6-7','5-6', '4-5', '3-4', '2-3', '1-2', '0-1', ''],
                         hoverinfo: 'label',
                         hole: .5,
@@ -228,5 +234,4 @@ function optionChanged(idNum) {
 
     // Draw the Gauge Chart
     drawGaugeChart(idNum);
-
 };
