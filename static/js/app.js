@@ -10,7 +10,7 @@ var gaugeChart = d3.select("#gauge");
 // Populate the Demographic Info panel
 function populateDemoInfo(idNum) {
     // Log a change
-    console.log("Pop: " + idNum);
+    // console.log("Pop: " + idNum);
 
     // Just grab the one ID we want
     var metadataFilter = data.metadata.filter(item => item["id"] == idNum);
@@ -53,7 +53,7 @@ function drawBarPlot(idNum) {
 
     // Just grab the one ID we want
     var samplesFilter = data["samples"].filter(item => item["id"] == idNum);
-    console.log(`samplesFilter length: ${samplesFilter.length}`);
+    // console.log(`samplesFilter length: ${samplesFilter.length}`);
 
     // get values into arrays
     var sample_values = samplesFilter[0].sample_values;
@@ -75,11 +75,11 @@ function drawBarPlot(idNum) {
 
     // Grab the text into arrays with map now
     var sample_values_list = slicedList.map(item => item.sample_values).reverse();
-    console.log(`sample_values_list: ${sample_values_list}`);
+    // console.log(`sample_values_list: ${sample_values_list}`);
     var otu_ids_list = slicedList.map(item => item.otu_ids).reverse();
-    console.log(`otu_ids_list: ${otu_ids_list}`);
+    // console.log(`otu_ids_list: ${otu_ids_list}`);
     var otu_labels_list = slicedList.map(item => item.otu_labels).reverse();
-    console.log(`otu_labels_list: ${otu_labels_list}`);
+    // console.log(`otu_labels_list: ${otu_labels_list}`);
 
     // Do the Plot
     // trace for the  data
@@ -101,9 +101,42 @@ function drawBarPlot(idNum) {
         xaxis: { title: "Values"}
     };
 
-    // Note that we omitted the layout object this time
-    // This will use default parameters for the layout
     Plotly.newPlot("bar", traceData, layout);
+}
+
+// Draw the bubble chart
+function drawBubbleChart(idNum) {
+    // Just grab the one ID we want
+    var samplesFilter = data["samples"].filter(item => item["id"] == idNum);
+
+    // trace for the data
+    var trace = {
+        x: samplesFilter[0].otu_ids,
+        y: samplesFilter[0].sample_values,
+        mode: 'markers',
+        text: samplesFilter[0].otu_labels,
+        marker: {
+                    color: samplesFilter[0].otu_ids,
+                    size: samplesFilter[0].sample_values,
+                    colorscale: "Earth"
+        }
+    };
+
+    // data
+    var traceData = [trace];
+    var layout = {
+                    showlegend: false,
+                    height: 600,
+                    width: 1500
+    };
+
+    Plotly.newPlot('bubble', traceData, layout);
+}
+
+// Draw the gauge chart
+function drawGaugeChart(idNum) {
+    // Just grab the one ID we want
+    var samplesFilter = data["samples"].filter(item => item["id"] == idNum);
 }
 
 // Initialization: do the load on the data, set up the menu, and draw the initial graphs
@@ -124,6 +157,9 @@ function initialization () {
         // Draw the Bar Plot
         drawBarPlot(idNum);
 
+        // Draw the Bubble Chart
+        drawBubbleChart(idNum);
+
         // TODO do the rest of the flow...
     });
 }
@@ -131,15 +167,14 @@ function initialization () {
 initialization();
 
 function optionChanged(idNum) {
-    // Get the updated ID Number
-    // var idNum = textSelect.property("value");
-    // console.log("Select Text: " + idNum)
-
     // Update the Demographic Info Panel
     populateDemoInfo(idNum);
 
-        // Draw the Bar Plot
-        drawBarPlot(idNum);
+    // Draw the Bar Plot
+    drawBarPlot(idNum);
+
+    // Draw the Bubble Chart
+    drawBubbleChart(idNum);
 
     // TODO: Call all of the functions to build the page
 
