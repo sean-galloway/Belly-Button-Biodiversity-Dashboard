@@ -130,7 +130,8 @@ function drawBubbleChart(idNum) {
     var layout = {
                     showlegend: false,
                     height: 600,
-                    width: 1500
+                    width: 1500,
+                    xaxis: { title: "OTU ID"}
     };
 
     Plotly.newPlot('bubble', traceData, layout);
