@@ -185,7 +185,7 @@ function drawGaugeChart(idNum) {
                         hole: .5,
                         type: 'pie',
                         showlegend: false
-    }]
+    }];
 
     // Define the Layout
     var layout = {
