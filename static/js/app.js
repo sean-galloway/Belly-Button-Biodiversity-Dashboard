@@ -5,7 +5,7 @@ var data = {};
 var inputSelector = d3.select("#selDataset");
 var panelDemoInfo = d3.select("#sample-metadata");
 
-// Function titleCase from this website: 
+// Function titleCase from this website:
 // https://www.freecodecamp.org/news/three-ways-to-title-case-a-sentence-in-javascript-676a9175eb27/
 function titleCase(str) {
     return str.toLowerCase().split(' ').map(function(word) {
