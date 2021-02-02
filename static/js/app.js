@@ -5,6 +5,14 @@ var data = {};
 var inputSelector = d3.select("#selDataset");
 var panelDemoInfo = d3.select("#sample-metadata");
 
+// Function titleCase from this website: 
+// https://www.freecodecamp.org/news/three-ways-to-title-case-a-sentence-in-javascript-676a9175eb27/
+function titleCase(str) {
+    return str.toLowerCase().split(' ').map(function(word) {
+        return (word.charAt(0).toUpperCase() + word.slice(1));
+    }).join(' ');
+}
+
 // Populate the Demographic Info panel
 function populateDemoInfo(idNum) {
     // Log a change
@@ -18,7 +26,7 @@ function populateDemoInfo(idNum) {
     panelDemoInfo.html("");
 
     // Fill it back in
-    Object.entries(metadataFilter[0]).forEach(([key, value]) => panelDemoInfo.append("h6").text(`${key}: ${value}`) );
+    Object.entries(metadataFilter[0]).forEach(([key, value]) => { var titleKey = titleCase(key); panelDemoInfo.append("h6").text(`${titleKey}: ${value}`) });
 }
 
 // Object Compare Function
@@ -145,9 +153,10 @@ function drawGaugeChart(idNum) {
     // Just grab the one ID we want
     var metadataFilter = data.metadata.filter(item => item["id"] == idNum);
     var level = metadataFilter[0].wfreq;
+    var offset = [ 0, 0, 3, 3, 1, -0.5, -2, -3, 0, 0];
 
     // Calc the meter point
-    var degrees = 180 - (level * 20);
+    var degrees = 180 - (level * 20 + offset[level]);
     var height = .6;
     var widthby2 = .05;
     var radians = degrees * Math.PI / 180;
@@ -173,7 +182,7 @@ function drawGaugeChart(idNum) {
                         name: 'frequency',
                         text: level,
                         hoverinfo: 'text+name'},
-                    {   values: [45/8, 45/8, 45/8, 45/8, 45/8, 45/8, 45/8, 45/8, 45/8, 50],
+                    {   values: [180/9, 180/9, 180/9, 180/9, 180/9, 180/9, 180/9, 180/9, 180/9, 180],
                         rotation: 90,
                         text: ['8-9','7-8','6-7','5-6', '4-5', '3-4', '2-3', '1-2', '0-1', ''],
                         textinfo: 'text',
@@ -190,7 +199,7 @@ function drawGaugeChart(idNum) {
     // Define the Layout
     var layout = {
                     shapes:[{ type: 'path', path: triangle, fillcolor: '#850000', line: { color: '#850000' } }],
-                    title: 'Belly Button Wash Frequency',
+                    title: '<b>Belly Button Wash Frequency</b><br>Scrubs per Week',
                     xaxis: {zeroline: false, showticklabels: false, showgrid: false, range: [-1, 1]},
                     yaxis: {zeroline: false, showticklabels: false, showgrid: false, range: [-1, 1]}
     };
